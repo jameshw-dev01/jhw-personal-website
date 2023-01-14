@@ -1,0 +1,22 @@
+.tile {
+    width:2rem;
+    height:2rem;
+    text-transform:uppercase
+}
+
+.white {
+    background-color:white
+}
+
+.gray {
+    background-color:gray
+}
+
+.green {
+    background-color:green
+}
+
+.yellow {
+    background-color: yellow
+}
+
