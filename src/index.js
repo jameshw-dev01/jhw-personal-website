@@ -2,13 +2,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {
-    createBrowserRouter,
+    createHashRouter,
     RouterProvider,
 } from "react-router-dom"
 import { Main } from './main';
 import WordlePage from './wordle/wordle-page'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
       path: "/",
       element: <Main/>,
