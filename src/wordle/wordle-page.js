@@ -9,7 +9,7 @@ export default class WordlePage extends React.Component {
     <div class="gradient-background">
     <NavBar/>
     <h1 class="text-center text-primary">Wordle solver</h1>
-    <p class="m-2">I was curious whether Wordle has a strategy that always allow a guess within 6 moves. 
+    <p class="m-4">I was curious whether Wordle has a strategy that always allow a guess within 6 moves. 
     I created a solver that uses heuristics based on letter frequencies and showed that it is possible, given
     the limited word list of 2315 words. Wordle does accept more words, 
     but the correct answer will be drawn from that word list. My implementation is not "optimal"

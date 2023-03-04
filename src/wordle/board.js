@@ -20,7 +20,7 @@ class Guess extends React.Component {
         }
     }
     keyDown(keyEvent) {
-        if (keyEvent.code === "Enter") {
+        if (keyEvent.keyCode === 13) {
             this.props.onEnter();
         }
     }
