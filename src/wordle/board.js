@@ -20,7 +20,7 @@ class Guess extends React.Component {
     }
     keyDown(keyEvent, i) {
         console.log(keyEvent);
-        if (keyEvent.keyCode === 13 || (keyEvent.keyCode === 9 && i===4)) {
+        if (keyEvent.keyCode === 13 && i===4) {
             this.props.onEnter();
         }
     }
@@ -35,6 +35,7 @@ class Guess extends React.Component {
                 onChange={event => this.props.onChange(event, i)}
                 ref={this.props.inputRefs[i]}
                 onKeyDown={keyEvent => this.keyDown(keyEvent, i)} 
+                enterKeyHint={i < 4 ? "next": "done"}
                 disabled={!this.props.isEditable}>
                 </input>)
         }
