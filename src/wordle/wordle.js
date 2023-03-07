@@ -2,12 +2,13 @@
 import wordleWords from './words.json'
 class Wordle {
     /**@param {Array<string>} words */
-    constructor(words = null) {
-        if (words == null) {
+    constructor(words = []) {
+        if (words.length === 0) {
             words = wordleWords["words"];
         }
         let rand = Math.floor(Math.random() * words.length)
         this.gameWord = words[rand];
+        console.log(this.gameWord);
         this.wordSample = words;
         /** @type {Set<String>} */
         this.wordSet = new Set();
@@ -15,7 +16,7 @@ class Wordle {
         this.won = false;
         this.attempts = [];
         /** @type {Array<string>} */
-        this.foundLetterPosition = [null, null, null, null, null];
+        this.foundLetterPosition = ["", "", "", "", ""];
         /** @type {Set<string>} */
         this.foundLetterWrongPosition = new Set();
         /** 
@@ -44,7 +45,7 @@ class Wordle {
             }
         }
         for (let i = 0; i < word.length; i++) {
-            if (this.foundLetterPosition[i] !== null && word[i] !== this.foundLetterPosition[i]) {
+            if (this.foundLetterPosition[i] !== "" && word[i] !== this.foundLetterPosition[i]) {
                 return false;
             }
             if (this.foundLetterWrongPosition.has(JSON.stringify([word[i], i]))) {

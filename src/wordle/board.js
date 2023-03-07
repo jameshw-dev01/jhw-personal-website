@@ -4,7 +4,6 @@ import './board.css'
 
 class Guess extends React.Component {
     /**
-     * 
      * @param {React.KeyboardEvent} keyEvent 
      * @param {number} i 
      */
@@ -20,6 +19,7 @@ class Guess extends React.Component {
         }
     }
     keyDown(keyEvent) {
+        console.log(keyEvent);
         if (keyEvent.keyCode === 13) {
             this.props.onEnter();
         }
@@ -27,18 +27,16 @@ class Guess extends React.Component {
     render() {
         let inputElements = [];
         for (let i = 0; i < 5; i++) {
-            let value = "";
-            if (this.props.value != null) {
-                value = this.props.value[i];
-            }
             inputElements.push(
             <input className={"tile " + this.props.background[i]}
-                onKeyUp={keyEvent=> this.keyUp(keyEvent, i)} maxLength={1}
-                defaultValue={value}
+                onKeyUp={keyEvent=> this.keyUp(keyEvent, i)} 
+                maxLength={1}
+                value={this.props.value[i]}
+                onChange={event => this.props.onChange(event, i)}
                 ref={this.props.inputRefs[i]}
                 onKeyDown={keyEvent => this.keyDown(keyEvent)} 
-                disabled={!this.props.isEditable}
-                ></input>)
+                disabled={!this.props.isEditable}>
+                </input>)
         }
         return (
             <div>
@@ -62,28 +60,29 @@ class Board extends React.Component {
             }
         }
         this.state = {
-            guesses: Array(6).fill(""),
+            guesses: Array.from(Array(6), () => new Array(5).fill("")),
             backgrounds: backgrounds,
             numGuesses: 0,
             helpText: '',
-            focusedElement: (0, 0)
+            game: new Wordle()
         };
-        this.game = new Wordle();
-        
-        console.log(this.state.backgrounds);
         this.setState({});
     }
+
+    onChange(event, i) {
+        console.log("onchange" + i);
+        let newGuesses = [...this.state.guesses];
+        newGuesses[this.state.numGuesses] = [...newGuesses[this.state.numGuesses]];
+        newGuesses[this.state.numGuesses][i] = event.target.value;
+        this.setState({guesses: newGuesses});
+    }
+
     onEnter(guessNum) {
-        let inputRefs = this.guessRefs[guessNum];
-        let word = '';
-        inputRefs.forEach(ref => {
-            word = word.concat(ref.current.value);
-        });
+        console.log(this.state.guesses);
+        let word = this.state.guesses[this.state.numGuesses].join("");
         word = word.toLowerCase();
-        console.log(word);
         try {
-            let ans = this.game.guessWord(word);
-            console.log(ans);
+            let ans = this.state.game.guessWord(word);
             let tempBackground = this.state.backgrounds;
             ans.forEach((result, index) => {
                 if (result === '=') {
@@ -97,10 +96,10 @@ class Board extends React.Component {
             let numGuesses = this.state.numGuesses;
             this.setState({numGuesses:this.state.numGuesses+1});
             this.setState({background:tempBackground});
-            if (this.game.won) {
+            if (this.state.game.won) {
                 this.setState({helpText:"Congratulations! "});
             } else if (numGuesses > 5) {
-                this.setState({helpText:"Too bad, the word was " + this.game.gameWord});
+                this.setState({helpText:"Too bad, the word was " + this.state.game.gameWord});
             } else {
                 this.setState({helpText:""})
             }
@@ -117,28 +116,34 @@ class Board extends React.Component {
             backgrounds.push([]);
             for (let j = 0; j < 5; j++) {
                 backgrounds[i].push("white");
-                this.guessRefs[i][j].current.value='';
             }
         }
         this.setState({
-            guesses: Array(6).fill(""),
+            guesses: Array.from(Array(6), () => new Array(5).fill("")),
             backgrounds: backgrounds,
             numGuesses: 0,
-            helpText:''
+            helpText:'',
+            game: new Wordle()
         });
-        this.game = new Wordle();
     }
 
 
     renderGuess(i) {
         return (
-            <Guess inputRefs={this.guessRefs[i]}
+            <Guess key={"wordleRow" + i}
+            inputRefs={this.guessRefs[i]}
             isEditable={i===this.state.numGuesses} 
             onEnter={()=>{
                 if (i === this.state.numGuesses) {
                     this.onEnter(i);
                 }
             }}
+            onChange={(event, j)=>{
+                if (i === this.state.numGuesses) {
+                    this.onChange(event, j);
+                }}
+            }
+            value={this.state.guesses[i]}
             background={this.state.backgrounds[i]}
             />
         );

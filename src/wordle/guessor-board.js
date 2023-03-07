@@ -39,28 +39,25 @@ class GuessBoard extends React.Component {
                 backgrounds[i].push("white");
             }
         }
+        let game = new Wordle();
+        let guessor = new WordleGuessor(game);
+        let guesses = Array.from(Array(6), () => new Array(5).fill(""));
+        const newGuess = guessor.generateGuess();
+        guesses[0] = newGuess.split("");
         this.state = {
-            guesses: Array(6).fill(""),
+            guesses: guesses,
             backgrounds: backgrounds,
             numGuesses: 0,
-            helpText: ''
+            helpText: '',
+            game: game,
+            guessor: guessor
         };
-        this.game = new Wordle();
-        this.guessor = new WordleGuessor(this.game);
-        
-        console.log(this.state.backgrounds);
-        this.setState({});
     }
 
-    onEnter(guessNum) {
-        let inputRefs = this.guessRefs[guessNum];
-        let word = '';
-        inputRefs.forEach(ref => {
-            word = word.concat(ref.current.value);
-        });
+    onEnter() {
+        let word = this.state.guesses[this.state.numGuesses].join("");
         word = word.toLowerCase();
-        console.log(word);
-        if (!this.guessor.game.isWordValid(word)) {
+        if (!this.state.guessor.game.isWordValid(word)) {
             this.setState({helpText:"Invalid word!"});
             return;
         }
@@ -80,11 +77,18 @@ class GuessBoard extends React.Component {
             }
         });
         this.setState({background:tempBackgrounds});
-        this.guessor.updateGameState(word, reportedResult);
-        let numGuesses = this.state.numGuesses + 1;
+        this.state.guessor.updateGameState(word, reportedResult);
+        const newGuess = this.state.guessor.generateGuess();
         let newGuesses = [...this.state.guesses];
-        newGuesses[guessNum] = word;
-        this.setState({numGuesses:numGuesses, guesses: newGuesses});
+        newGuesses[this.state.numGuesses+1] = newGuess.split("");
+        this.setState({numGuesses:this.state.numGuesses+1, guesses: newGuesses});
+    }
+
+    onChange(event, i) {
+        let newGuesses = [...this.state.guesses];
+        newGuesses[this.state.numGuesses] = [...newGuesses[this.state.numGuesses]];
+        newGuesses[this.state.numGuesses][i] = event.target.value;
+        this.setState({guesses: newGuesses});
     }
 
     onRestart() {
@@ -93,37 +97,41 @@ class GuessBoard extends React.Component {
             backgrounds.push([]);
             for (let j = 0; j < 5; j++) {
                 backgrounds[i].push("white");
-                this.guessRefs[i][j].current.value='';
             }
         }
+        let newGame = new Wordle();
+        let newGuesses = Array.from(Array(6), () => new Array(5).fill(""))
+        const newGuess = this.state.guessor.generateGuess();
+        newGuesses[0] = newGuess.split("");
         this.setState({
-            guesses: Array(6).fill(""),
+            guesses:  newGuesses,
             backgrounds: backgrounds,
             numGuesses: 0,
-            helpText:''
+            helpText:'',
+            game: newGame,
+            guessor: new WordleGuessor(newGame)
         });
-        this.game = new Wordle();
+        
+        this.setState({guesses: newGuesses});
     }
 
 
     renderGuess(i) {
-        let suggestedWord = null;
-        if (i === this.state.numGuesses) {
-            suggestedWord = this.guessor.generateGuess();
-            console.log(suggestedWord);
-        } else {
-            suggestedWord = this.state.guesses[i];
-        }
         return (
             <Guess inputRefs={this.guessRefs[i]}
-            value={suggestedWord}
+            value={this.state.guesses[i]}
             key={"guess " + i}
-            isEditable={i===this.state.numGuesses} 
+            isEditable={i===this.state.numGuesses}
             onEnter={()=>{
                 if (i === this.state.numGuesses) {
-                    this.onEnter(i);
+                    this.onEnter();
                 }
             }}
+            onChange={(event, j)=>{
+                if (i === this.state.numGuesses) {
+                    this.onChange(event, j);
+                }}
+            }
             background={this.state.backgrounds[i]}
             />
         );

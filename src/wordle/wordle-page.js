@@ -17,19 +17,19 @@ export default class WordlePage extends React.Component {
     In fact, it is possible that a better algorithm can guess all words in 5 guesses, since my algorithm only
     has about 10 words that take 6 guesses. </p>
     <div class="row">
-            <div class="col-md-6 d-flex justify-content-center">
-                <div>
-                    <h3>My Wordle copy</h3>
-                    <Board/>
-                </div>
-            </div>
-            <div class="col-md-6 d-flex justify-content-center">
-                <div>
-                    <h3>Wordle solver</h3>
-                    <GuessBoard/>
-                </div>
+        <div class="col-md-6 d-flex justify-content-center">
+            <div class="text-center">
+                <h3>My Wordle copy</h3>
+                <Board/>
             </div>
         </div>
-        </div>)
+        <div class="col-md-6 d-flex justify-content-center">
+            <div class="text-center">
+                <h3>Wordle solver</h3>
+                <GuessBoard/>
+            </div>
+        </div>
+    </div>
+    </div>)
     }
 }
