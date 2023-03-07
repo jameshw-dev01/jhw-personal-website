@@ -18,9 +18,9 @@ class Guess extends React.Component {
             this.props.inputRefs[i + 1].current.focus();
         }
     }
-    keyDown(keyEvent) {
+    keyDown(keyEvent, i) {
         console.log(keyEvent);
-        if (keyEvent.keyCode === 13) {
+        if (keyEvent.keyCode === 13 || (keyEvent.keyCode === 9 && i===4)) {
             this.props.onEnter();
         }
     }
@@ -34,7 +34,7 @@ class Guess extends React.Component {
                 value={this.props.value[i]}
                 onChange={event => this.props.onChange(event, i)}
                 ref={this.props.inputRefs[i]}
-                onKeyDown={keyEvent => this.keyDown(keyEvent)} 
+                onKeyDown={keyEvent => this.keyDown(keyEvent, i)} 
                 disabled={!this.props.isEditable}>
                 </input>)
         }
@@ -70,7 +70,6 @@ class Board extends React.Component {
     }
 
     onChange(event, i) {
-        console.log("onchange" + i);
         let newGuesses = [...this.state.guesses];
         newGuesses[this.state.numGuesses] = [...newGuesses[this.state.numGuesses]];
         newGuesses[this.state.numGuesses][i] = event.target.value;
@@ -78,7 +77,6 @@ class Board extends React.Component {
     }
 
     onEnter(guessNum) {
-        console.log(this.state.guesses);
         let word = this.state.guesses[this.state.numGuesses].join("");
         word = word.toLowerCase();
         try {
