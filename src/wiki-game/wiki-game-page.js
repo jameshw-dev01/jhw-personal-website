@@ -24,7 +24,7 @@ export default class WikiPage extends React.Component {
 
     sendGameInfo() {
         this.setState({help_text: "Processing, please wait"})
-        fetch("http://164.92.141.228:8000/api?start="+encodeURIComponent(this.state.start_link)+"&end="+encodeURIComponent(this.state.end_link))
+        fetch("https://api.wiki-pages-project.com/api?start="+encodeURIComponent(this.state.start_link)+"&end="+encodeURIComponent(this.state.end_link))
         .then(response => {
             console.log(response);
             if (response.status === 200) {
