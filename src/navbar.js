@@ -12,6 +12,9 @@ export default function NavBar(props) {
                 <li class="nav-item">
                     <Link to="wordle" class="nav-link">Wordle</Link>
                 </li>
+                <li class="nav-item">
+                    <Link to="wIKI" class="nav-link">Wiki Game</Link>
+                </li>
             </ul>
             </div>
         </div>

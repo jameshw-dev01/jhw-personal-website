@@ -73,14 +73,28 @@ export class Main extends React.Component {
             </div>
             <div class="m-2">
                 <h1 class="text-center">Projects</h1>
-                <Link to="wordle">
-                    <div class="card" style={{width: "18rem"}}>
+                <div class="row m-2">
+                <div class="col-sm-4">
+                <div class="card" style={{width: "18rem"}}>
+                    <Link to="wordle">
                         <img src="img/wordle.png" class="card-img-top" alt="..."/>
                         <div class="card-body">
                             <p class="card-text">Sample wordle app with a tool to suggest best word</p>
                         </div>
+                    </Link>
+                </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card" style={{width: "18rem"}}>
+                        <Link to="wiki">
+                            <img src="img/wikipedia_search.jpg" class="card-img-top" alt="..."/>
+                            <div class="card-body">
+                                <p class="card-text">Wikipedia Path Finder with AI Embeddings</p>
+                            </div>
+                        </Link>
                     </div>
-                </Link>
+                </div>
+                </div>
             </div>
         </div>
         </>;

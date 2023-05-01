@@ -147,7 +147,7 @@ class GuessBoard extends React.Component {
                 <h2>{this.state.helpText}</h2>
                 <button title="Restart" onClick={() => this.onRestart()}>Restart</button>
                 <div>
-                    <p>Enter the result of the suggested guess here</p>
+                    <p>Enter the result of the suggested guess, or your own word, here</p>
                     <ResultChooser refs={this.selectRefs}/>
                     {rendered}
                 </div>

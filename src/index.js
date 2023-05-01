@@ -7,6 +7,7 @@ import {
 } from "react-router-dom"
 import { Main } from './main';
 import WordlePage from './wordle/wordle-page'
+import WikiPage from './wiki-game/wiki-game-page';
 
 const router = createHashRouter([
     {
@@ -16,6 +17,10 @@ const router = createHashRouter([
     {
         path: "/wordle",
         element: <WordlePage/>
+    },
+    {
+      path: "/wiki",
+      element: <WikiPage/>
     }
   ]);
 ReactDOM.render(

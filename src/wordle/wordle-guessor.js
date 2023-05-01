@@ -5,6 +5,7 @@ class WordleGuessor {
      * 
      * @param {Wordle} game 
      */
+    // @ts-ignore
     constructor(game = null) {
         this.game = game;
         /** @type{string[]} */
@@ -75,6 +76,7 @@ class WordleGuessor {
             for (let i = 0; i < word.length; i++) {
                 if (letterCounts[i].has(word[i])) {
                     const prev = letterCounts[i].get(word[i]);
+                    // @ts-ignore
                     letterCounts[i].set(word[i], prev + 1);
                 } else {
                     letterCounts[i].set(word[i], 1);
@@ -97,6 +99,7 @@ class WordleGuessor {
             let score = 0;
             for (let i = 0; i < word.length; i++) {
                 if (letterCounts[i].has(word[i])) {
+                    // @ts-ignore
                     score += letterCounts[i].get(word[i]);
                 }
             }
@@ -123,6 +126,7 @@ class WordleGuessor {
                 if (!combinedCounts.has(key)) {
                     combinedCounts.set(key, value)
                 } else {
+                    // @ts-ignore
                     combinedCounts.set(key,combinedCounts.get(key) + value);
                 }
             });
@@ -140,9 +144,11 @@ class WordleGuessor {
                 let firstLetters = word.slice(0, i);
                 if (!firstLetters.includes(word[i])) {
                     if (combinedCounts.has(word[i])) {
+                        // @ts-ignore
                         score += combinedCounts.get(word[i]);
                     }
                     if (letterCounts[i].has(word[i])) {
+                        // @ts-ignore
                         score += letterCounts[i].get(word[i]);
                     }
                 }
@@ -167,6 +173,7 @@ class WordleGuessor {
             testGame.gameWord = possibleAnswer;
             const result = testGame.guessWord(testWord).join();
             if (options.has(result)) {
+                // @ts-ignore
                 options.get(result).push(possibleAnswer);
             } else {
                 options.set(result, [possibleAnswer]);
